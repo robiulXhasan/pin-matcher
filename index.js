@@ -20,24 +20,37 @@ document.getElementById("pin-generator-button").addEventListener("click", functi
   document.getElementById("display-pin").value = pin;
 });
 
-// keypad click
-function clickNumber(number) {
-  const inputPin = parseInt(document.getElementById("input-pin-display").value + number);
-  document.getElementById("input-pin-display").value = inputPin;
-}
-// clear input display
-document.getElementById("clear-btn").addEventListener("click", function () {
-  document.getElementById("input-pin-display").value = "";
+// take input
+document.getElementById("get-numbers").addEventListener("click", function (event) {
+  const targetValue = event.target.innerText;
+  const pinInputField = document.getElementById("input-pin-display");
+  const previousTypedNumber = pinInputField.value;
+  // clear input pin
+  if (isNaN(targetValue)) {
+    if (targetValue === "C") {
+      pinInputField.value = "";
+    } else if (targetValue === "<") {
+      const pinDigits = previousTypedNumber.split("");
+      pinDigits.pop();
+      const remainingDigits = pinDigits.join("");
+      pinInputField.value = remainingDigits;
+    }
+  } else {
+    const inputPin = previousTypedNumber + targetValue;
+    pinInputField.value = inputPin;
+  }
 });
 // check matched or not
 document.getElementById("submit").addEventListener("click", function () {
-  const inputPin = parseInt(document.getElementById("input-pin-display").value);
-  const generatedPin = parseInt(document.getElementById("display-pin").value);
+  const inputPin = document.getElementById("input-pin-display").value;
+  const generatedPin = document.getElementById("display-pin").value;
+  const matched = document.getElementById("matched");
+  const notMatched = document.getElementById("not-matched");
   if (inputPin === generatedPin) {
-    document.getElementById("matched").style.display = "block";
-    console.log("matched");
+    matched.style.display = "block";
+    notMatched.style.display = "none";
   } else {
-    document.getElementById("not-matched").style.display = "block";
-    console.log("not matched");
+    notMatched.style.display = "block";
+    matched.style.display = "none";
   }
 });
